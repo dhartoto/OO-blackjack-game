@@ -1,0 +1,37 @@
+<div class='alert alert-success'>
+  Dealer bust! Congratulations, you win!
+</div>
+<div class = 'hero-unit'>
+  <h2>You win $<%= session[:bet] %>.</h2>  
+    <h3>Dealer's hand (Total: <%= session[:dealer_total] %>)</h3>
+    
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <% session[:dealer_hand].each do |card|%>
+          <li class='span3'>
+            <%= conv_to_img(card) %>
+          </li>
+          <% end %>
+        </ul>
+      </div> 
+
+    <h3>Your hand (Total: <%= session[:player_total] %>)</h3>
+    
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <% session[:player_hand].each do |card|%>
+          <li class='span3'>
+            <%= conv_to_img(card) %>
+          </li>
+          <% end %>
+        </ul>
+      </div> 
+
+    <p>Would you like to play again?</p>
+    <form action='/game/player/win' method='post'>
+      <input type='submit' value='Yes'class='btn btn-success'/>
+    </form>
+    <form action='/end' method='post'>
+      <input type='submit' value='No'class='btn btn-danger'/>
+    </form>
+</div>

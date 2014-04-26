@@ -1,0 +1,52 @@
+<div class='alert alert-success'>
+  <% if session[:player_total] == 21 %>
+    Blackjack! Congratulations, you win!
+  <% else %>
+    Congratulations! you win with a hand of <%= session[:player_total] %>.
+  <% end %>
+</div>
+<div class = 'hero-unit'>
+  <p>You win $<%= session[:bet] %>.</p>  
+    <p>Dealer's hand (Total: <=% session[:dealer_total] %>)</p>
+    <% if session[:player_turn] == false%>
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <% session[:dealer_hand].each do |card|%>
+          <li class='span3'>
+            <%= conv_to_img(card) %>
+          </li>
+          <% end %>
+        </ul>
+      </div> 
+    <% else %>
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <li class='span3'>
+            <img src='/images/cards/cover.jpg' class='thumbnail' style='width: 160px; height 234px'/>
+          </li>
+          <li class='span3'>
+            <%= conv_to_img(session[:dealer_hand][1]) %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+    <p>Your hand ( Total: <%= session[:player_total] %>)</p>
+
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <% session[:player_hand].each do |card|%>
+          <li class='span3'>
+            <%= conv_to_img(card) %>
+          </li>
+          <% end %>
+        </ul>
+      </div>  
+
+    <p>Would you like to play again?</p>
+    <form action='/game/player/win' method='post'>
+      <input type='submit' value='Yes' class='btn btn-success'/>
+    </form>
+    <form action='/end' method='post'>
+      <input type='submit' value='No' class='btn btn-danger'/>
+    </form>
+</div>

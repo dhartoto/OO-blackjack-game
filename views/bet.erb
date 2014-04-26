@@ -1,0 +1,16 @@
+<% if session[:got_chips] == false %>
+<div class='alert alert-danger'>
+  You do not have enough chips for your current bet. Try a different amount.
+</div>
+<% end %>
+
+<div class = "hero-unit">
+  <h2> Hello <%= session[:username] %> </h2>  
+    <p>You have $<%= session[:wallet] %> worth of chips.</p>
+    <p>How much do you want to bet?</p>
+      <form action = '/bet' method ="post">
+        <input type = 'text' name = 'bet'/>
+        <br>
+        <input type = 'submit' value='Bet' class='btn btn-primary btn-medium'/>
+      </form>
+</div>

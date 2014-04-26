@@ -1,0 +1,67 @@
+<div class = "hero-unit">
+    <h3>You bet $<%= session[:bet] %> on this round with $<%= session[:wallet] %> worth of chips left.</h3>
+
+    <% if session[:player_turn] == true %>
+      
+      <h4>Dealer's hand</h4>
+
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <li class='span3'>
+            <img src='/images/cards/cover.jpg' class='thumbnail' style='width: 160px; height 234px'/>
+          </li>
+          <li class='span3'>
+            <%= conv_to_img(session[:dealer_hand][1]) %>
+          </li>
+        </ul>
+      </div>
+
+      <h4>Your hand (Total: <%= session[:player_total] %>)</h4>
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <% session[:player_hand].each do |card|%>
+          <li class='span3'>
+            <%= conv_to_img(card) %>
+          </li>
+          <% end %>
+        </ul>
+      </div>  
+
+      <p>Would you like to hit or stay?</p>
+      <form action='/game/hit' method='post'>
+        <input type='submit' value='Hit' class='btn btn-success'/>
+      </form>
+      <form action='/game/stay' method='post'>
+        <input type='submit' value='Stay' class='btn btn-danger'/>
+      </form>
+    <% else %>
+    
+      <h4>Dealer's hand (Total: <%= session[:dealer_total] %>)</h4>
+
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <% session[:dealer_hand].each do |card|%>
+          <li class='span3'>
+            <%= conv_to_img(card) %>
+          </li>
+          <% end %>
+        </ul>
+      </div> 
+
+      <h4>Your hand (Total: <%= session[:player_total] %>)</h4>
+
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <% session[:player_hand].each do |card|%>
+          <li class='span3'>
+            <%= conv_to_img(card) %>
+          </li>
+          <% end %>
+        </ul>
+      </div> 
+      <p>Click to see dealers next move.</p>
+      <form action='/game/hit' method='post'>
+        <input type='submit' value='Next' class='btn btn-primary btn-medium'>
+      </form>
+    <% end %>
+</div>

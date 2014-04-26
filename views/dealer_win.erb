@@ -1,0 +1,57 @@
+<!--ALERT NOTIFICATION-->
+<div class='alert alert-error'>
+  <% if session[:dealer_total] == 21 %>
+    Blackjack! Dealer win!
+  <% else %>
+    Dealer wins with a hand of <%= session[:dealer_total] %>.
+  <% end %>
+</div>
+
+<!--DISPLAY-->
+<div class = 'hero-unit'>
+  <h2>You loose $<%= session[:bet] %>.</h2>
+
+    <h3>Dealer's hand (Total: <%= session[:dealer_total] %>)</h3>
+
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <% session[:dealer_hand].each do |card|%>
+          <li class='span3'>
+            <%= conv_to_img(card) %>
+          </li>
+          <% end %>
+        </ul>
+      </div> 
+
+    <h3>Your hand (Total: <%= session[:player_total] %>)</h3>
+
+      <div class='row-fluid'>
+        <ul class='thumbnails'>
+          <% session[:player_hand].each do |card|%>
+          <li class='span3'>
+            <%= conv_to_img(card) %>
+          </li>
+          <% end %>
+        </ul>
+      </div> 
+    <% if session[:wallet] - session[:bet] == 0%>
+      <p>You have no more chips to bet.</p>
+      <p>Would you like to buy more chips?</p>
+
+      <form action='/replay' method='post'>
+        <input type='submit' value='Yes' class='btn btn-success'/>
+      </form>
+      <form action='/end' method='post'>
+        <input type='submit' value='No' class='btn btn-danger'/>
+      </form>
+
+    <% else %>
+      <p>Would you like to play again?</p>
+      <form action='/game/player/bust' method='post'>
+        <input type='submit' value='Yes' class='btn btn-success'/>
+      </form>
+      <form action='/end' method='post'>
+        <input type='submit' value='No' class='btn btn-danger'/>
+      </form>
+    <% end %>
+</div>
