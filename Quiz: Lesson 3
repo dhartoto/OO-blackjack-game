@@ -1,0 +1,24 @@
+Quiz: Lesson 3
+
+1. HTML: Hypertext Markup Language is the structure or skeleton of the web page.
+  CSS: Cascading Style Sheet controls the look/style of the web page.
+  Javascript: Makes the web page interactive.
+
+2. HTTP request contains a verb (i.e. GET), URL and parameters
+
+3. HTTP response contains status code and a payload.
+
+4. set session[:username] = params[:username]
+
+5. Because to developer needs to reconstitute the state every time to make the user experience persistent. the developer needs to use a persistence storage (database, caches).
+
+6. Because the user doesn't need to see everything that is going on with HTTP. We could just use a console like terminal.
+
+7. MVC stand for Model View Controller. It is important because it separates the different components of an app, such as front-end, back-end, http.
+
+SINATRA
+1. Requests are processed by route blocks
+2. The response of a render is html whereas the response of a redirect is a GET request to another URL.
+3. We use <%= %> within the HTML to show dynamic content.
+4. ERB template is turned into HTML before it is sent as a response.
+5. Instance variables set in main.rb allow templates to access them in Sinatra.
