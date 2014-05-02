@@ -159,6 +159,11 @@ get '/game/init' do
 end
 
 get '/game' do
+  if session[:player_total] == 21
+    @win = "Blackjack! Congratulations, you win!"
+    session[:wallet] += session[:bet]
+    session[:gameover] = true
+  end
     erb :game
 end
 
@@ -215,9 +220,13 @@ get '/game/dealer' do
 end
 
 get '/game/compare' do
-  if session[:dealer_total] >= session[:player_total]
+  if session[:dealer_total] > session[:player_total]
     @lose = "Dealer wins with a hand of #{session[:dealer_total]}"
     session[:wallet] -= session[:bet]
+    session[:gameover] = true
+    erb :game, layout: false
+  elsif session[:dealer_total] == session[:player_total]
+    @win = "It's a draw! There are no winners or losers in this round."
     session[:gameover] = true
     erb :game, layout: false
   else
