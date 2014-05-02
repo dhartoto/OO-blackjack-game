@@ -1,16 +1,17 @@
+
 <div class = "hero-unit">
   
     <h2>Welcome <%= session[:username] %></h2>
     <p>Would you like to play or exit?</p>
 
     <div class="btn-group">
-      <form action='/bet' method='get'>
+      <form id='bet_form' action='/bet' method='get'>
         <input type ='submit' value='Play' class='btn btn-success'/>
       </form>
     </div>
 
     <div class="btn-group">
-      <form action='/end' method='post'>
+      <form id='end_form' action='/end' method='post'>
         <input type='submit' value='Exit' class='btn btn-danger'/>
       </form>
     </div>

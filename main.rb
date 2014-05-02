@@ -128,7 +128,7 @@ get '/bet' do
   if session[:wallet] == 0
     erb :replay
   else
-  erb :bet
+    erb :bet
   end
 end
 
@@ -136,51 +136,51 @@ post '/bet' do
   if params[:bet].to_i > session[:wallet]
     @error = "You do not have enough chips. Try a different amount"
     halt erb :bet
-
-  elsif params[:bet].empty? or params[:bet].to_i == 0
+  elsif params[:bet].nil? || params[:bet].to_i == 0
     @error = "Please bet an amount greater than 0."
     halt erb :bet
   else
     session[:bet] = params[:bet].to_i
     session[:gameover] = false
-    redirect '/game'
+    redirect '/game/init'
   end
 end
 
-get '/game' do
-  if session[:play_deck] == nil or session[:play_deck] == []
+get '/game/init' do
+  if session[:play_deck] == nil || session[:play_deck] == []
     init_game
     init_deal
   else
     init_deal
   end
-  session[:dealer_total] = calc(session[:dealer_hand])
-  session[:player_total] = calc(session[:player_hand])
-  redirect '/game/player'
+    session[:dealer_total] = calc(session[:dealer_hand])
+    session[:player_total] = calc(session[:player_hand])
+    redirect '/game'
 end
 
-get '/game/player' do
-  if session[:player_total] == 21
-    @success = "Blackjack! Congratulations, you win!"
-    session[:wallet] += session[:bet]
-    session[:gameover] = true
+get '/game' do
     erb :game
-  elsif session[:player_total] > 21
-    @error = "You bust! Dealer wins!"
-    session[:wallet] -= session[:bet]
-    session[:gameover] = true
-    erb :game
-  else
-    erb :game
-  end
 end
 
 post '/game/hit' do
   if session[:player_turn]
     session[:player_hand] << hit
     session[:player_total] = calc(session[:player_hand])
-    redirect '/game/player'
+    # redirect '/game'
+    if session[:player_total] == 21
+      @win = "Blackjack! Congratulations, you win!"
+      session[:wallet] += session[:bet]
+      session[:gameover] = true
+
+    elsif session[:player_total] > 21
+      @lose = "You bust! Dealer wins!"
+      session[:wallet] -= session[:bet]
+      session[:gameover] = true
+    end
+    erb :game, layout: false
+
   else
+
     if session[:dealer_total] < 17  
       session[:dealer_hand] << hit
       session[:dealer_total] = calc(session[:dealer_hand])
@@ -191,38 +191,40 @@ post '/game/hit' do
   end
 end
 
-post '/game/player/stay' do
+post '/game/stay' do
   session[:player_turn] = false
   redirect '/game/dealer'
 end
 
 get '/game/dealer' do
   if session[:dealer_total] == 21
-    @error = "Blackjack! Dealer wins!"
+    @lose = "Blackjack! Dealer wins!"
     session[:wallet] -= session[:bet]
     session[:gameover] = true
-    erb :game
+    erb :game, layout: false
+
   elsif session[:dealer_total] > 21
-    @success = "Dealer bust! You win!"
+    @win = "Dealer bust! You win!"
     session[:wallet] += session[:bet]
     session[:gameover] = true
-    erb :game
+    erb :game, layout: false
+
   else
-    erb :game
+    erb :game, layout: false
   end
 end
 
 get '/game/compare' do
   if session[:dealer_total] >= session[:player_total]
-    @error = "Dealer wins with a hand of #{session[:dealer_total]}"
+    @lose = "Dealer wins with a hand of #{session[:dealer_total]}"
     session[:wallet] -= session[:bet]
     session[:gameover] = true
-    erb :game
+    erb :game, layout: false
   else
-    @success = "Congratulations! You win with a total of #{session[:player_total]}"
+    @win = "Congratulations! You win with a total of #{session[:player_total]}"
     session[:wallet] += session[:bet]
     session[:gameover] = true
-    erb :game
+    erb :game, layout: false
   end  
 end
 
